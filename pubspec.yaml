@@ -1,0 +1,31 @@
+name: nailul_murod
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment: 
+  sdk: '>=2.18.6 <3.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.2
+  get: 4.6.5
+  flutter: 
+    sdk: flutter
+  sqflite: ^2.2.8+4
+  path_provider: ^2.0.15
+
+dev_dependencies: 
+  flutter_lints: 2.0.2
+  flutter_test: 
+    sdk: flutter
+
+flutter: 
+  uses-material-design: true
+  assets:
+    - assets/data/wirid.json
+    - assets/data/dzikir.json
+    - assets/data/rotib.json
+    - assets/data/hidzib.json
+    - assets/data/doa.json
+    - assets/data/qoshidah.json
+    - assets/data/sholawat.json
+    - assets/images/logo.png

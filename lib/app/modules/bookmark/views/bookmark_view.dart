@@ -42,7 +42,7 @@ class BookmarkView extends GetView<BookmarkController> {
                       onTap: () {
                         DBProvider.db.deleteDtlBookmark(snapshot.data[index].id,
                             snapshot.data[index].title);
-                        Get.to(HomeView());
+                        Get.to(const HomeView());
                         Get.to(const BookmarkView());
                       },
                       child: const Icon(Icons.delete),

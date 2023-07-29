@@ -16,6 +16,7 @@ class DetailController extends GetxController {
 
   @override
   void onClose() {
+    Get.reset();
     super.onClose();
   }
 

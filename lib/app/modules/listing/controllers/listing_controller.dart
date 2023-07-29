@@ -13,13 +13,18 @@ class ListingController extends GetxController {
   final count = 0.obs;
   final AsyncMemoizer dCMemorizer = AsyncMemoizer();
   final debouncer = Debouncer(milliseconds: 1000);
-  final TextEditingController cSearch = TextEditingController();
-  final kitabProvider = KitabProvider();
+  var cSearch = TextEditingController().obs;
+  // final kitabProvider = KitabProvider();
   final filterKitab = FilterKitab();
+  KitabProvider? kitabProvider;
+  var coba;
+  String? cTitle;
+  String? cSlug;
 
   ///search tf
   Widget searchTF() {
     return TextField(
+      controller: cSearch.value,
       decoration: const InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(
@@ -33,22 +38,18 @@ class ListingController extends GetxController {
         contentPadding: EdgeInsets.all(15.0),
         hintText: 'Cari judul',
       ),
-      onSubmitted: (string) {
-        debouncer.run(
-          () {
-            update();
-            filterKitab.filterList(
-                Get.parameters['title']!.toLowerCase(), string);
-            listKitab();
-          },
-        );
+      onSubmitted: (value) {
+        Get.back();
+        Get.toNamed(Routes.listing,
+            parameters: {'title': cTitle.toString(), 'slug': cSlug.toString()});
+        print(value);
       },
     );
   }
 
   Widget listKitab() {
     return FutureBuilder(
-      future: kitabProvider.getAllKitab(Get.parameters['title']!.toLowerCase()),
+      future: filterKitab.filterList(cTitle!.toLowerCase(), cSearch.value.text),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -67,6 +68,7 @@ class ListingController extends GetxController {
                     Get.toNamed(Routes.detail, parameters: {
                       'title': '${snapshot.data[index].title}',
                       'detail': '${snapshot.data[index].detail}',
+                      'translate': '${snapshot.data[index].translate}',
                     });
                     DBProvider.db.deleteDtlBookmark(
                         snapshot.data[index].id, snapshot.data[index].title);
@@ -92,7 +94,21 @@ class ListingController extends GetxController {
     );
   }
 
+  Widget list() {
+    return GetBuilder<ListingController>(builder: (context) {
+      return ListView.builder(
+        itemCount: coba == null ? 0 : coba!.data.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Text('${coba.data[index].title}');
+        },
+      );
+    });
+  }
+
+  @override
   void onInit() async {
+    cTitle = Get.parameters['title'].toString();
+    cSlug = Get.parameters['slug'].toString();
     super.onInit();
   }
 

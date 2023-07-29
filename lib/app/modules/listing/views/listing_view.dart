@@ -17,7 +17,7 @@ class ListingView extends GetView<ListingController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Get.parameters['title']!),
+        title: Text(Get.parameters['title'].toString()),
         centerTitle: true,
       ),
       body: Column(
